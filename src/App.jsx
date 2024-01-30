@@ -22,6 +22,14 @@ function App() {
     }
     setpassword(pass);
   },[length,numAllowed,charAllowed,setpassword])
+
+  // Copy to clipboard Function
+  const passwordRef = useRef(null);
+  const copyToClipboard = useCallback(() => {
+    passwordRef.current?.select();
+    window.navigator.clipboard.writeText(password);
+  })
+
   useEffect( () => {
     passwordGenrator();
   },[length,numAllowed,charAllowed,setpassword])
@@ -31,8 +39,8 @@ function App() {
       <div className="flex bg-slate-600 mt-20 w-1/3 justify-center rounded-xl p-4 flex-col">
         <h1 className="text-4xl text-center">Password Generator</h1>
         <div className="flex h-1/2 items-center"> 
-          <input type="text" id="input" value={password} placeholder="Password" className="bg-slate-200 text-slate-600 rounded-sm w-3/4 p-1 m-2 mt-3 text-2xl mr-0" />
-          <button className="bg-blue-900 w-1/4 p-2 ml-1 m-2 rounded-sm mt-3">copy</button>
+          <input type="text" id="input" value={password} placeholder="Password" className="bg-slate-200 text-slate-600 rounded-sm w-3/4 p-1 m-2 mt-3 text-2xl mr-0" ref={passwordRef }/>
+          <button onClick={() => copyToClipboard()} className="bg-blue-900 w-1/4 p-2 ml-1 m-2 rounded-sm mt-3">copy</button>
         </div>
         <div className="flex text-orange-500 p-2 justify-around">
           <input onChange={(e) => {setLength(e.target.value)}} type="range" min={3} max={100} value={length} id="range"/>
